@@ -1,0 +1,301 @@
+CREATE DATABASE temp1;
+DROP DATABASE temp1;
+DROP DATABASE temp2;
+create database temp2;
+CREATE DATABASE college;
+CREATE DATABASE IF NOT EXISTS college;
+DROP DATABASE IF EXISTS tamp1;
+USE college;
+CREATE TABLE student (
+id INT PRIMARY KEY,
+name VARCHAR(50),
+age INT NOT NULL
+);
+INSERT INTO student VALUES (1,"SUNNY",26);
+INSERT INTO student VALUES (2,"ROHIT",16);
+INSERT INTO student (name,id,age) VALUES ("RAM",3,15),("PUSPA",4,12);
+
+CREATE DATABASE xyz_company;
+USE xyz_company;
+CREATE TABLE employee(
+id INT PRIMARY KEY,
+name VARCHAR(100),
+salary INT
+);
+INSERT INTO employee (id,name,salary) VALUES (1,"ADAM",25000),(2,"BOB",30000),(3,"CASEY",40000);
+SELECT * FROM employee;
+
+
+SELECT * FROM student;
+SHOW DATABASES;
+SHOW TABLES;
+
+CREATE TABLE students(
+rollno INT PRIMARY KEY,
+name VARCHAR(50),
+marks INT NOT NULL,
+grade VARCHAR(1),
+city VARCHAR(20)
+);
+
+-- ALTER
+
+ALTER TABLE students
+ADD COLUMN age INT NOT NULL DEFAULT 19;
+
+ALTER TABLE students
+MODIFY age VARCHAR(2);
+
+ALTER TABLE students
+CHANGE age stu_age INT;
+
+ALTER TABLE students
+RENAME TO stu;
+
+ALTER TABLE stu
+RENAME TO students;
+
+ALTER TABLE students
+DROP COLUMN stu_age;
+
+SELECT * FROM students;
+
+CREATE TABLE dept(
+id INT PRIMARY KEY,
+name VARCHAR(50)
+);
+
+INSERT INTO dept VALUES
+(101,"ECE"),
+(102,"CSE");
+
+UPDATE dept
+SET id = 104
+WHERE id = 102;
+
+SELECT * FROM dept;
+
+ CREATE TABLE teacher(
+ id INT PRIMARY KEY,
+ name VARCHAR(50),
+ dept_id INT,
+ FOREIGN KEY (dept_id) REFERENCES dept(id)
+ ON DELETE CASCADE
+ ON UPDATE CASCADE
+ );
+ 
+INSERT INTO teacher VALUES
+(101 ,"SUNNY", 102),
+(102,"HIMANSHU",101),
+(103,"KHUSHABU",102);
+
+UPDATE teacher
+SET id = 104
+WHERE id =103;
+ 
+ SELECT * FROM teacher;
+ 
+ DROP TABLE teacher;
+ 
+INSERT INTO students (rollno,name,marks,grade,city) VALUES (101,"ANIL",78,"C","PUNE"),(102,"BHUMKIA",93,"A","MUMBAI"),
+(103,"CHETAN",85,"B","MUMBAI"),(104,"DHURAV",96,"A","DELHI"),(105,"HIMANSHU",12,"F","DELHI"),(106,"NEHA",82,"B","DELHI");
+SELECT name,marks FROM students;
+SELECT * FROM students;
+SELECT * FROM students WHERE marks>70 AND city="MUMBAI";
+SELECT city,count(rollno)
+FROM students
+GROUP BY city
+HAVING max(marks)>90;
+SELECT city
+FROM students 
+WHERE grade = "A"
+GROUP BY city
+HAVING MAX(marks)>90;
+
+SET SQL_SAFE_UPDATES =0;
+
+UPDATE students
+SET  grade = "O"
+WHERE grade = "A";
+
+UPDATE students
+SET  grade = "D"
+WHERE rollno = 105;
+
+UPDATE students
+SET marks=marks+1;
+
+DELETE FROM students
+WHERE rollno = 103;
+
+SELECT * FROM students;
+DROP DATABASE xyz_company;
+DROP DATABASE college;
+DROP DATABASE temp2;
+DROP DATABASE IF EXISTS sakila;
+DROP DATABASE IF EXISTS world;
+
+-- JOIN
+
+
+-- CREATE DATABASE
+CREATE DATABASE college;
+USE college;
+
+-- CREATE TABLE
+
+CREATE TABLE student(
+id INT PRIMARY KEY,
+name VARCHAR(50)
+);
+
+-- INSERT DATA IN TABLE
+INSERT INTO student (id,name)
+VALUES
+(101,"RAJA"),
+(102,"ROHIT"),
+(103,"PUJA");
+
+CREATE TABLE course(
+id INT PRIMARY KEY,
+course VARCHAR(50)
+);
+
+INSERT INTO course (id, course)
+VALUES
+(102,"SCIENCE"),
+(103,"ENGLISH"),
+(105,"COMPUTER"),
+(107,"ECE");
+
+SELECT * FROM student;
+SELECT * FROM course;
+
+-- INEER JOIN CONCEPT
+SELECT * 
+FROM student AS a           /* ALIAS METHOD  */
+INNER JOIN course AS b    
+on a.id=b.id;
+
+-- LEFT JOIN
+SELECT * 
+FROM student                   /* NORMAL METHOD */
+LEFT JOIN course           
+ON student.id=course.id;
+
+-- RIGHT JOIN
+SELECT * 
+FROM student AS a           /* ALIAS METHOD  */
+RIGHT JOIN course AS b    
+on a.id=b.id;
+
+-- FULL JOIN
+SELECT * 
+FROM student                   /* NORMAL METHOD */
+LEFT JOIN course           
+ON student.id=course.id      /* NOT USE  HERE THIS TYPE OF SYMBOL; , */
+UNION
+SELECT * 
+FROM student AS a           /* ALIAS METHOD  */
+RIGHT JOIN course AS b    
+on a.id=b.id;
+
+-- LEFT EXCLUSIVE JOIN
+SELECT * 
+FROM student                   
+LEFT JOIN course AS b     
+ON student.id=b.id
+WHERE b.id IS NULL;
+
+-- RIGHT EXCLUSIVE JOIN
+SELECT * 
+FROM student AS a                  
+RIGHT JOIN course AS b     
+ON a.id=b.id
+WHERE a.id IS NULL;
+
+-- SELF JOIN
+CREATE TABLE employee(
+id INT PRIMARY KEY,
+name VARCHAR(50),
+manager_id int
+);
+
+INSERT INTO employee (id, name ,manager_id)
+VALUES
+(101,"ADAM",103),
+(102,"BOB",104),
+(103,"CASEY",NULL),
+(104,"DONALD",103);
+
+SELECT * FROM employee;
+
+-- SELF JOIN
+SELECT a.name as manager_name,b.name
+FROM employee AS a
+JOIN employee AS b
+ON a.id = b.manager_id;
+
+-- UNION
+SELECT name FROM employee
+UNION
+SELECT name FROM employee;
+
+-- UNION ALL
+SELECT name FROM employee
+UNION ALL
+SELECT name FROM employee;
+
+-- SUB QUERY
+
+CREATE TABLE students(
+rollno INT PRIMARY KEY,
+name VARCHAR(50),
+marks INT NOT NULL,
+grade VARCHAR(1),
+city VARCHAR(20)
+);
+
+INSERT INTO students (rollno,name,marks,grade,city) 
+VALUES 
+(101,"ANIL",78,"C","PUNE"),
+(102,"BHUMKIA",93,"A","MUMBAI"),
+(103,"CHETAN",85,"B","MUMBAI"),
+(104,"DHURAV",96,"A","DELHI"),
+(105,"HIMANSHU",12,"F","DELHI"),
+(106,"NEHA",82,"B","DELHI");
+
+SELECT name,marks FROM students;
+
+SELECT * FROM students;
+
+-- SUB QUERY
+
+SELECT AVG(marks)
+FROM students;
+
+SELECT name,marks
+FROM students
+WHERE marks >74.3333;
+
+SELECT name,marks
+FROM students
+WHERE marks >(SELECT AVG(marks)                 /*  SUB QUERY  */
+FROM students);
+
+SELECT name,rollno 
+FROM students
+WHERE rollno IN(
+	SELECT rollno
+    FROM students
+    WHERE rollno % 2=0); 
+    
+-- VIEW IN MYSQL
+
+CREATE VIEW v1 AS
+SELECT rollno,name,marks FROM students;
+ 
+ SELECT * FROM v1;
+ DROP VIEW v1;
+
+    
