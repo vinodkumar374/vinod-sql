@@ -11,8 +11,8 @@ id INT PRIMARY KEY,
 name VARCHAR(50),
 age INT NOT NULL
 );
-INSERT INTO student VALUES (1,"SUNNY",26);
-INSERT INTO student VALUES (2,"ROHIT",16);
+INSERT INTO student VALUES (1,"vihan",26);
+INSERT INTO student VALUES (2,"rajan",15);
 INSERT INTO student (name,id,age) VALUES ("RAM",3,15),("PUSPA",4,12);
 
 CREATE DATABASE xyz_company;
